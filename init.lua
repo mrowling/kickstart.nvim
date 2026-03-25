@@ -102,7 +102,7 @@ vim.g.have_nerd_font = false
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+vim.o.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -204,7 +204,7 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 -- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- View keybindings
-vim.keymap.set('n', '<leader>?', ':map<CR>', { desc = "View All Keybindings", noremap = true, silent = false })
+vim.keymap.set('n', '<leader>?', ':map<CR>', { desc = 'View All Keybindings', noremap = true, silent = false })
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -422,7 +422,7 @@ require('lazy').setup({
       -- Also provide a more discoverable mapping under the search prefix
       vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch [B]uffers' })
       -- Search through git files that have changed
-      vim.keymap.set('n', '<leader>sG', builtin.git_status, { desc ='[S]earch [G]it changes'})
+      vim.keymap.set('n', '<leader>sG', builtin.git_status, { desc = '[S]earch [G]it changes' })
 
       -- This runs on LSP attach per buffer (see main LSP attach function in 'neovim/nvim-lspconfig' config for more info,
       -- it is better explained there). This allows easily switching between pickers if you prefer using something else!
@@ -661,46 +661,46 @@ require('lazy').setup({
       --    :Mason
       --
       -- You can press `g?` for help in this menu.
-       -- Map lspconfig server names to mason package names. Some lsp names
-       -- (e.g. 'tsserver') do not match mason package names directly.
-       local ensure_installed = {}
-       for _, name in ipairs(vim.tbl_keys(servers or {})) do
-         if name == 'tsserver' then
-           -- mason provides 'typescript-language-server' + 'typescript'
-           table.insert(ensure_installed, 'typescript-language-server')
+      -- Map lspconfig server names to mason package names. Some lsp names
+      -- (e.g. 'tsserver') do not match mason package names directly.
+      local ensure_installed = {}
+      for _, name in ipairs(vim.tbl_keys(servers or {})) do
+        if name == 'tsserver' then
+          -- mason provides 'typescript-language-server' + 'typescript'
+          table.insert(ensure_installed, 'typescript-language-server')
           --  table.insert(ensure_installed, 'typescript')
-         else
-           table.insert(ensure_installed, name)
-         end
-       end
+        else
+          table.insert(ensure_installed, name)
+        end
+      end
 
-       -- Add any additional mason package names you want installed
-       vim.list_extend(ensure_installed, { 'gopls' })
+      -- Add any additional mason package names you want installed
+      vim.list_extend(ensure_installed, { 'gopls' })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-       for name, server in pairs(servers) do
-         vim.lsp.config(name, server)
-         vim.lsp.enable(name)
-       end
+      for name, server in pairs(servers) do
+        vim.lsp.config(name, server)
+        vim.lsp.enable(name)
+      end
 
-       -- TypeScript LSP (ts_ls) via vim.lsp.config (nvim 0.11+ API).
-       -- Uses Mason's bin path directly so it works regardless of $PATH.
-       local mason_bin = vim.fn.stdpath('data') .. '/mason/bin'
-       local ts_server_cmd = mason_bin .. '/typescript-language-server'
+      -- TypeScript LSP (ts_ls) via vim.lsp.config (nvim 0.11+ API).
+      -- Uses Mason's bin path directly so it works regardless of $PATH.
+      local mason_bin = vim.fn.stdpath 'data' .. '/mason/bin'
+      local ts_server_cmd = mason_bin .. '/typescript-language-server'
 
-       if vim.fn.executable(ts_server_cmd) == 1 then
-         vim.lsp.config('ts_ls', {
-           cmd = { ts_server_cmd, '--stdio' },
-           filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
-           root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json', '.git' },
-           on_attach = function(client, _bufnr)
-             -- disable formatting so Conform/prettier handles it instead
-             client.server_capabilities.documentFormattingProvider = false
-           end,
-         })
-         vim.lsp.enable('ts_ls')
-       end
+      if vim.fn.executable(ts_server_cmd) == 1 then
+        vim.lsp.config('ts_ls', {
+          cmd = { ts_server_cmd, '--stdio' },
+          filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+          root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json', '.git' },
+          on_attach = function(client, _bufnr)
+            -- disable formatting so Conform/prettier handles it instead
+            client.server_capabilities.documentFormattingProvider = false
+          end,
+        })
+        vim.lsp.enable 'ts_ls'
+      end
     end,
   },
 
